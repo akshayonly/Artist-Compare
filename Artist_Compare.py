@@ -139,7 +139,7 @@ def GetAnArtist(artist_id, token, country='US'):
 ######################
 
 # Logo
-image = Image.open('Compare-Artist.png')
+image = Image.open('Artist-Compare.png')
 st.image(image, use_column_width=True)
 
 # Version and Info
