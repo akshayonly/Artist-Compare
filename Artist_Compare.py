@@ -1,6 +1,7 @@
 """
 Title: Artist Compare
 Author: Akshay Shirsath
+Icons made by www.flaticon.com
 """
 ######################
 # Libraries
@@ -139,41 +140,38 @@ def GetAnArtist(artist_id, token, country='US'):
 ######################
 
 # Logo
-image = Image.open('Artist-Compare.png')
+image = Image.open('Artist-Compare-Dark.png')
 st.image(image, use_column_width=True)
 
 # Version and Info
-st.text("version 1.3")
+st.text("version 1.4")
 
 st.markdown("""
 - This web app compares any two music artists based on their popular tracks. 
 Whatever genres, languages they have sung, enter their names in the below two boxes, and compare!
 """)
 
-expander_bar = st.beta_expander("More Info")
+expander_bar = st.beta_expander("Site Info")
 expander_bar.markdown("""
 * **Python Libraries:** streamlit, json, urllib, requests, sklearn, plotly, pandas
 * **Data source:** [Spotify API](https://developer.spotify.com/documentation/web-api/)
 * **Author:** Akshay Shirsath   
 """)                                              
 
-# For space
-st.text("")
-
 # Artist 01
 st.subheader('Compare')
-default1 = "Eric Clapton"
-first_artist_name = st.text_input("Artist 1", default1)
+default1 = "Mahesh Kale"
+first_artist_name = st.text_input("Artist I", default1)
 
 # Artist 02
+st.subheader('And')
+default2 = "Eminem"
+second_artist_name = st.text_input("Artist II", default2)
+
 st.subheader('With')
-default2 = "Drake"
-second_artist_name = st.text_input("Artist 2", default2)
+features_numbers = st.select_slider('Slide to select', options=[3, 5, 8])
 
-# For space
-st.text("")
-
-features_numbers = st.select_slider('No. Of Features', options=[3, 5, 8])
+st.subheader(f"{features_numbers} Features")
 
 primary = ['acousticness', 'danceability', 'energy']
 secondary = ['acousticness', 'danceability', 'energy', 'loudness', 'popularity score']
@@ -195,6 +193,8 @@ else:
 # Plot
 ######################
 
+# For space
+st.text("\n\n")
 
 if st.checkbox(f"Show Plot", False):
 
@@ -234,7 +234,7 @@ if st.checkbox(f"Show Plot", False):
           r=np.int64(np.round(first_tracks_data[subset].mean() * 10)),
           theta=first_tracks_data[subset].columns.str.title(),
           fill='toself', 
-          line_color ='#fdbf00',
+          line_color ='#00ccb2',
           name=first_artist_results['name']
     ))
     
@@ -242,16 +242,16 @@ if st.checkbox(f"Show Plot", False):
           r=np.int64(np.round(second_tracks_data[subset].mean() * 10)),
           theta=second_tracks_data[subset].columns.str.title(),
           fill='toself',
-          line_color ='#25d9f8',
+          line_color ='#ff8700',
           name=second_artist_results['name']
     ))
 
     fig.update_layout(
-        font_size = 15, 
+        font_size = 16, 
         showlegend=True,
         polar=dict(
-            bgcolor = "rgb(241, 242, 246)",
-            radialaxis=dict(visible=True),
+            bgcolor = "rgb(54, 54, 54)",
+            radialaxis=dict(visible=False),
             ),
     )
 
