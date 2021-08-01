@@ -143,16 +143,14 @@ def GetAnArtist(artist_id, token, country='US'):
 image = Image.open('Artist-Compare-Dark.png')
 st.image(image, use_column_width=True)
 
-# Version and Info
-st.text("version 1.4")
-
 st.markdown("""
-- This web app compares any two music artists based on their popular tracks. 
-Whatever genres, languages they have sung, enter their names in the below two boxes, and compare!
+- This web app compares any two music artists or bands based on their popular tracks. 
+Whatever genres, languages they have sung, enter their names in the below boxes, and compare!
 """)
 
 expander_bar = st.beta_expander("Site Info")
 expander_bar.markdown("""
+* **version 1.5**
 * **Python Libraries:** streamlit, json, urllib, requests, sklearn, plotly, pandas
 * **Data source:** [Spotify API](https://developer.spotify.com/documentation/web-api/)
 * **Author:** Akshay Shirsath   
@@ -160,34 +158,71 @@ expander_bar.markdown("""
 
 # Artist 01
 st.subheader('Compare')
-default1 = "Mahesh Kale"
+default1 = "Ravi Shankar"
 first_artist_name = st.text_input("Artist I", default1)
 
 # Artist 02
 st.subheader('And')
-default2 = "Eminem"
+default2 = "Pink Floyd"
 second_artist_name = st.text_input("Artist II", default2)
 
-st.subheader('With')
-features_numbers = st.select_slider('Slide to select', options=[3, 5, 8])
+#######################################
+# Selecting subset columns & parameters
+#######################################
 
-st.subheader(f"{features_numbers} Features")
+st.subheader('With Parameters')
+features_numbers = st.select_slider('Slide To Select', options=[3, 5, 8])
 
 primary = ['acousticness', 'danceability', 'energy']
-secondary = ['acousticness', 'danceability', 'energy', 'loudness', 'popularity score']
-tertiary = ['acousticness', 'danceability', 'energy', 'liveness', 'loudness', 
+secondary = ['acousticness', 'danceability', 'energy', 'instrumentalness', 'popularity score']
+tertiary = ['acousticness', 'danceability', 'energy', 'liveness', 'instrumentalness', 
             'popularity score', 'tempo', 'valence']
 
-##########################
-# Selecting subset columns
-##########################
+three = ("""
+    * **Acousticness:** Describe acoustic music, i.e. 
+    usage of musical instruments without electrical amplification.
+    * **Danceability:** Describe danceable music.
+    * **Energy:** Describes energetic tracks e.g., 
+    Heavy Metal is energetic, whereas Classical Music has low energy.
+    """)  
+
+five = ("""
+    * **Acousticness:** Describe acoustic music, i.e. 
+    usage of musical instruments without electrical amplification.
+    * **Danceability:** Describe danceable music.
+    * **Energy:** Describes energetic tracks e.g., 
+    Heavy Metal is energetic, whereas Classical Music has low energy.
+    * **Instrumentalness:** Describe whether tracks have vocals, higher value says more tracks have vocals and vice versa.
+    * **Popularity Score:**  Popularity of the music tracks.
+    """)  
+
+eight = ("""
+    * **Acousticness:** Describe acoustic music, i.e. 
+    usage of musical instruments without electrical amplification.
+    * **Danceability:** Describe danceable music.
+    * **Energy:** Describes energetic tracks e.g., 
+    Heavy Metal is energetic, whereas Classical Music has low energy.
+    * **Instrumentalness:** Describe whether tracks have vocals, higher value says more tracks have vocals and vice versa.
+    * **Popularity Score:**  Popularity of the music tracks.
+    * **Liveness:** Describe the presence of an audience in the music tracks.
+    * **Tempo:** Describe the speed or pace of music tracks.
+    * **Valence:** Describe the positivity and negativity in music tracks. 
+    High-value says positive (e.g. happy, cheerful, euphoric), 
+    whereas low-value state more negative (e.g. sad, depressed, angry).
+    """)  
 
 if features_numbers == len(primary):
     subset = primary
+    feat_display = three
 elif features_numbers == len(secondary):
     subset = secondary
+    feat_display = five
 else:
     subset = tertiary
+    feat_display = eight
+
+expander_bar = st.beta_expander("Parameters Interpretation")
+expander_bar.markdown(feat_display)  
 
 ######################
 # Plot
@@ -196,7 +231,7 @@ else:
 # For space
 st.text("\n\n")
 
-if st.checkbox(f"Show Plot", False):
+if st.button('Show Plot'):
 
     start=datetime.now()
 
@@ -256,4 +291,5 @@ if st.checkbox(f"Show Plot", False):
     )
 
     st.plotly_chart(fig)
-    st.stop()
+
+st.stop()        
